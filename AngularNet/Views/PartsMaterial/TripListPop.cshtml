@@ -1,0 +1,77 @@
+﻿
+@{
+    Layout = null;
+}
+<style>
+    .sma {
+        margin: 0;
+        min-width: 30px;
+  line-height: 20px;
+  min-height: 20px;
+    }
+    /*.sma2 {
+        height: 20px;
+    }
+    .md-button.md-icon-button .md-ripple-container {
+        height: 30px;
+        line-height: 30px;
+}*/
+</style>
+<div ng-controller="TripListPopMController as gc">
+    <h2>List and Modal Popup</h2>
+    <table class="datatable">
+        <tr>
+            <th>Trip Date</th>
+            <th>Airport</th>
+            <th>Airport Name</th>
+            <th>Trans Type Id</th>
+            <th>Group Name</th>
+            <th>Group Size</th>
+            <th>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="gc.addTrip(tripForm)">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>
+            </th>
+        </tr>
+        <tr ng-repeat="model in gc.trip.list  | filter:ac.searchText" ng-form="tripForm" @*ng-click="gc.editTrip(model, tripForm)"*@ >
+            <td>
+                {{model.tripDate_ | date : "MM/dd/yyyy"}}
+            </td>
+            <td>{{model.airportId_.text}}</td>
+            <td>{{model.airportId_.text2}}</td>
+            <td>
+                {{model.transTypeId_.text}}
+                @*<select ng-model="model.transTypeId" ng-options="o.value as o.text for o in gc.ds.ref.transTypes"
+                class="form-control" id="transTypeId" required not-set="-1"
+                disabled="disabled" style="background:white;border:none;"></select>*@
+            </td>
+            <td>
+                {{model.groupName}}
+            </td>
+            <td>
+                {{model.groupSize}}
+            </td>
+            <td>
+                    @*<md-button class="md-icon-button md-primary sma sma2" aria-label="Settings"
+                               ng-click="ggc.editTrip(model, tripForm)">
+                        <md-icon md-svg-icon="~/img/icons/ic_check_circle_24px.svg"></md-icon>
+                    </md-button>
+                    <md-button class="md-icon-button md-warn sma sma2" aria-label="Settings"
+                               ng-click="gc.deleteTrip(model, tripForm)"
+                               ng-show="!model.isNew">
+                        <md-icon md-svg-icon="~/img/icons/ic_delete_24px.svg"></md-icon>
+                    </md-button>*@
+                <md-button ng-click="gc.editTrip(model, tripForm)"
+                                class="md-primary sma">Edit</md-button>
+                    <md-button  class="md-warn sma" ng-click="gc.deleteTrip(model, tripForm)"
+                               ng-show="!model.isNew">
+                        Delete
+                    </md-button>
+
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+

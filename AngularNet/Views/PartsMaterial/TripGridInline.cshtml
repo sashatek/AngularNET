@@ -1,0 +1,89 @@
+﻿
+@{
+    Layout = null;
+}
+<div ng-controller="TripGridInlineController as gc" class="col-md-10">
+    <h2>Grid with Inline Editing</h2>
+    <table class="datatable" style="width: 100%">
+        <tr>
+            <th>Trip Date</th>
+            <th>Airport</th>
+            <th>Airport Name</th>
+            <th>Trans Type Id</th>
+            <th>Group Name</th>
+            <th>Group Size</th>
+            <th>
+                @*<button type="button" class="btn btn-primary btn-xs" ng-click="gc.addTrip(tripForm)">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                </button>*@
+            </th>
+            <th></th>
+            <th></th>
+        </tr>
+        <tr ng-repeat="model in gc.trip.list  | filter:ac.searchText" ng-form="tripForm" ng-click="gc.editTrip(model, tripForm)">
+            <td ng-if="gc.model !== model">
+                {{model.tripDate_ | date : "MM/dd/yyyy"}}
+            </td>
+            <td ng-if="gc.model === model">
+                <div class="input-group">
+                    <input type="text" ng-model="model.tripDate_" datepicker-popup="MM/dd/yyyy" class="form-control dateBox"
+                           id="tripDate" is-open="calop" required style="width: 100px">
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="calop = !calop;$event.stopPropagation()">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+                </div>
+
+            </td>
+            <td ng-if="gc.model !== model">{{model.airportId_.text}}</td>
+            <td ng-if="gc.model === model">
+                <input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
+                       typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                       typeahead-on-select="model.airportId = $item.value"/>
+            </td>
+            <td>{{model.airportId_.text2}}</td>
+            <td ng-if="gc.model !== model">
+                {{model.transTypeId_.text}}
+            </td>
+            <td ng-if="gc.model === model">
+                <select ng-model="model.transTypeId" ng-options="o.value as o.text for o in gc.ds.ref.transTypes"
+                        class="form-control" id="transTypeId" required not-set="-1"></select>
+            </td>
+            <td ng-if="gc.model !== model">
+                {{model.groupName}}
+            </td>
+            <td ng-if="gc.model === model">
+                <input type="text" ng-model="model.groupName" class="form-control" id="groupName" required>
+            </td>
+            <td ng-if="gc.model !== model">
+                {{model.groupSize}}
+            </td>
+            <td ng-if="gc.model == model">
+                <input type="number" ng-model="model.groupSize" class="form-control groupSize" id="groupSize">
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs" ng-click="gc.saveTrip(tripForm); $event.stopPropagation();"
+                        ng-disabled="!(tripForm.$dirty && tripForm.$valid)" ng-if="gc.model === model">
+                    Save
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary btn-xs"
+                        ng-click="gc.cancel(tripForm); $event.stopPropagation();" ng-if="gc.model === model">
+                    Cancel
+                </button>
+            </td>
+            <td>
+                <button type="button" class="btn btn-warning btn-xs" ng-click="gc.deleteTrip(); $event.stopPropagation();"
+                        ng-show="!model.isNew" ng-if="gc.model === model">
+                    Delete
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+

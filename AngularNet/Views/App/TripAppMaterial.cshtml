@@ -1,0 +1,157 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no"/>
+
+    <link rel="stylesheet" href="/angular-material/angular-material.css">
+    <link href="~/Content/Trip.css" rel="stylesheet"/>
+
+    <title>Angular .NET Reference App Material Design</title>
+</head>
+<style>
+    md-content {
+        background-color: tan;
+        height: 100%;
+        padding: 20px;
+    }
+</style>
+
+<body ng-app="TripAppModule"  ng-controller="TripAppController as ac" layout="row" ng-cloak>
+
+    @*<md-sidenav layout="column" class="sidenav1" md-is-locked-open='false'>
+        SideNav
+    </md-sidenav>*@
+    <div layout="column" tabIndex="-1" role="main" flex>
+            @*<md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
+                <div class="md-toolbar-tools"></div>
+            </md-toolbar>*@
+
+
+        <md-toolbar class="md-menu-toolbar">
+            <div layout="row">
+                <md-toolbar-filler layout layout-align="center center">
+                    <md-icon md-svg-icon="call:chat"></md-icon>
+                </md-toolbar-filler>
+                <div>
+                    <md-menu-bar>
+                        <md-menu>
+                            <button ng-click="$mdOpenMenu()">Dialogs</button>
+                            <md-menu-content>
+                                <md-menu-item>
+                                    <md-button ng-click="ac.viewMode=1">Always Editable</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="ac.viewMode=2">Popup Form</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="ac.viewMode=3">Side Form</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="ac.viewMode=4">In Line</md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="ac.viewMode=5">Form In Panel</md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-menu-bar>
+                </div>
+            </div>
+        </md-toolbar>
+
+
+
+        <md-content flex  md-scroll-y layout-padding layout="column">
+                <div ng-if="ac.viewMode==1" ng-include="urlApp + 'PartsMaterial/TripGridA' "></div>
+                <div ng-if="ac.viewMode==2" ng-include="urlApp + 'PartsMaterial/TripListPop' "></div>
+                <div ng-if="ac.viewMode==3" ng-include="urlApp + 'PartsMaterial/TripListnForm' "></div>
+                <div ng-if="ac.viewMode==4" ng-include="urlApp + 'PartsMaterial/TripGridInline' "></div>
+                <div ng-if="ac.viewMode==5" ng-include="urlApp + 'PartsMaterial/TripPanelnForm' "></div>
+
+            </md-content>T
+        </div>
+
+        @*<div ng-app="TripAppModule">
+                <div ng-controller="TripAppController as ac" ng-cloak layout="row">
+                    <md-sidenav layout="column" class="sidenav1" md-is-locked-open='true'>
+                        SideNav
+                    </md-sidenav>
+                    <div layout="column" tabIndex="-1" role="main" flex>
+                        <md-toolbar class="md-whiteframe-glow-z1 site-content-toolbar">
+                            <div class="md-toolbar-tools"></div>
+                        </md-toolbar>
+                        <md-toolbar class="md-menu-toolbar">
+                                <div layout="row">
+                                    <md-toolbar-filler layout layout-align="center center">
+                                        <md-icon md-svg-icon="call:chat"></md-icon>
+                                    </md-toolbar-filler>
+                                    <div>
+                                        <md-menu-bar>
+                                            <md-menu>
+                                                <button ng-click="$mdOpenMenu()">Dialogs</button>
+                                                <md-menu-content>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="ac.viewMode=1">Always Editable</md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="ac.viewMode=2">Popup Form</md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="ac.viewMode=3">Side Form</md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="ac.viewMode=4">In Line</md-button>
+                                                    </md-menu-item>
+                                                    <md-menu-item>
+                                                        <md-button ng-click="ac.viewMode=5">Form In Panel</md-button>
+                                                    </md-menu-item>
+                                                </md-menu-content>
+                                            </md-menu>
+                                        </md-menu-bar>
+                                    </div>
+                                </div>
+                            </md-toolbar>
+                        <md-content md-scroll-y layout-padding flex layout="column">
+                            <div>
+                                asdfas fjasdf asdf adsf sgdfsgdfsg
+
+                            </div>
+                            fdg dfsg
+                                <div ng-if="ac.viewMode==1" ng-include="urlApp + 'PartsMaterial/TripGridA' "></div>
+                                <div ng-if="ac.viewMode==2" ng-include="urlApp + 'PartialMaterial/TripListPop' "></div>
+                                <div ng-if="ac.viewMode==3" ng-include="urlApp + 'PartialMaterial/TripListnForm' "></div>
+                                <div ng-if="ac.viewMode==4" ng-include="urlApp + 'PartialMaterial/TripGridInline' "></div>
+                                <div ng-if="ac.viewMode==5" ng-include="urlApp + 'PartialMaterial/TripPanelnForm' "></div>
+                        </md-content>
+                    </div>
+                </div>
+            </div>*@
+
+        <script>
+            var urlApp = '@Url.Content("~")'
+            var userId = 1; //@@Model.userId;
+            var isMaterial = true;
+        </script>
+        <script src="/angular-material/angular.js"></script>
+        <script src="/angular-material/angular-aria.min.js"></script>
+        <script src="/angular-material/angular-animate.min.js"></script>
+        <script src="/angular-material/angular-material.js"></script>
+
+
+
+        <script src="~/SPA/common.js"></script>
+        <script src="~/SPA/DataServices.js"></script>
+        <script src="~/SPA/DataServiceUni.js"></script>
+        <script src="~/SPA/TripGridAController.js"></script>
+        <script src="~/SPA/TripGridAsController.js"></script>
+        <script src="~/SPA/TripListPopM.js"></script>
+        <script src="~/SPA/ListnFormController.js"></script>
+        <script src="~/SPA/TripGridInlineController.js"></script>
+        <script src="~/SPA/TripAppController.js"></script>
+
+</body>
+</html>

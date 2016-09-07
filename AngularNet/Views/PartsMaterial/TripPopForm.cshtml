@@ -1,0 +1,102 @@
+﻿
+@{
+    Layout = null;
+}
+
+<style>
+    .dialogdemoBasicUsage #popupContainer {
+  position: relative; }
+.dialogdemoBasicUsage .footer {
+  width: 100%;
+  text-align: center;
+  margin-left: 20px; }
+.dialogdemoBasicUsage .footer, .dialogdemoBasicUsage .footer > code {
+  font-size: 0.8em;
+  margin-top: 50px; }
+</style>
+<md-dialog ng-cloak class="dialogdemoBasicUsage">
+    <form name="TripForm" novalidate>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <h2 class="modal-title">Add/Edit Trip</h2>
+                <span flex></span>
+                <md-button class="md-icon-button" ng-click="fc.cancel()">
+                    <md-icon md-svg-src="~/img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-dialog-content>
+            <div class="md-dialog-content">
+                <div class="md-block">
+                    <label>Trip Date</label>
+                    <md-datepicker ng-model="fc.model.tripDate_" md-placeholder="Enter date"></md-datepicker>
+                </div>
+                <md-input-container class="md-block">
+                    <label>AAirport IATA</label>
+                    <md-autocomplete ng-disabled="false" md-menu-class="ttt"
+                                     md-no-cache="true" md-select-on-match="true"
+                                     md-selected-item="fc.model.airportId_"
+                                     md-search-text-change="fc.searchTextChange(gc.searchText)"
+                                     md-search-text="model.searchText"
+                                     md-selected-item-change="model.airportId = item.value"
+                                     md-items="item in fc.ds.lookArpt(model.searchText)"
+                                     md-item-text="item.text"
+                                     md-min-length="1"
+                                     placeholder="Pick an Airport">
+                        <md-item-template>
+                            <span md-highlight-text="gc.searchText" md-highlight-flags="^i" class="item-metadata">{{item.text}}</span>
+                        </md-item-template>
+                        <md-not-found>
+                            No states matching "{{ctrl.searchText}}" were found.
+                            <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                        </md-not-found>
+                    </md-autocomplete>
+                </md-input-container>
+                <md-input-container class="md-block">
+                    <label>Group Name</label>
+                    <input type="text" ng-model="fc.model.groupName" class="form-control" id="groupName" required>
+                </md-input-container>
+          
+
+                @*<div class="form-group">
+                    <label for="airportId" class="control-label">Airport IATA</label>
+                    <input type="text" class="form-control" ng-model="fc.model.airportId_" id="airportId" required
+                           typeahead="o as o.text for o in fc.ds.lookArpt($viewValue)" typeahead-on-select="fc.model.airportId = $item.value"
+                           typeahead-editable="false" />
+                </div>
+                <div class="form-group">
+                    <label for="airportId" class="control-label">Airport Name</label>
+                    <div class="form-control-static">
+                        {{fc.model.airportId_.text2}}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="transTypeId" class="control-label">Trans Type Id</label>
+                    <select ng-model="fc.model.transTypeId" ng-options="o.value as o.text for o in fc.ds.ref.transTypes"
+                            class="form-control" id="transTypeId" required not-set="-1"></select>
+                </div>
+                <div class="form-group">
+                    <label for="groupName" class="control-label">Group Name</label>
+                    <input type="text" ng-model="fc.model.groupName" class="form-control" id="groupName" required>
+                </div>
+                <div class="form-group">
+                    <label for="groupSize" class="control-label">Group Size</label>
+                    <input type="number" ng-model="fc.model.groupSize" class="form-control" id="groupSize">
+                </div>*@
+
+            </div>
+        </md-dialog-content>
+        <md-dialog-actions layout="row">
+            <span flex></span>
+            <md-button ng-click="fc.saveTrip(TripForm)" ng-disabled="!(TripForm.$dirty && TripForm.$valid)"
+                       class="md-primary">
+                Save
+            </md-button>
+            <md-button ng-click="fc.cancel()" style="margin-right: 20px;">
+                Cancel
+            </md-button>
+        </md-dialog-actions>
+    </form>
+</md-dialog>
+
+

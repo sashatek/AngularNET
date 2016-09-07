@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="devcodeModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="AirportId" />
+          </Key>
+          <Property Name="AirportId" Type="int" Nullable="false" />
+          <Property Name="IataIdent" Type="varchar" MaxLength="3" Nullable="false" />
+          <Property Name="Ident" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="IcaoCode" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="Lat" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="Lon" Type="varchar" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TransType">
+          <Key>
+            <PropertyRef Name="TransTypeId" />
+          </Key>
+          <Property Name="TransTypeId" Type="int" Nullable="false" />
+          <Property Name="Description" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trip">
+          <Key>
+            <PropertyRef Name="TripId" />
+          </Key>
+          <Property Name="TripId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="TripDate" Type="datetime" Nullable="false" />
+          <Property Name="AirportId" Type="int" Nullable="false" />
+          <Property Name="TransTypeId" Type="int" Nullable="false" />
+          <Property Name="GroupName" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="GroupSize" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Trip_Airport">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="1" />
+          <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="AirportId" />
+            </Principal>
+            <Dependent Role="Trip">
+              <PropertyRef Name="AirportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trip_TransType">
+          <End Role="TransType" Type="Self.TransType" Multiplicity="1" />
+          <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransType">
+              <PropertyRef Name="TransTypeId" />
+            </Principal>
+            <Dependent Role="Trip">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="devcodeModelStoreContainer">
+          <EntitySet Name="Airport" EntityType="Self.Airport" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TransType" EntityType="Self.TransType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trip" EntityType="Self.Trip" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Trip_Airport" Association="Self.FK_Trip_Airport">
+            <End Role="Airport" EntitySet="Airport" />
+            <End Role="Trip" EntitySet="Trip" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trip_TransType" Association="Self.FK_Trip_TransType">
+            <End Role="TransType" EntitySet="TransType" />
+            <End Role="Trip" EntitySet="Trip" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="devcodeModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Airport">
+          <Key>
+            <PropertyRef Name="AirportId" />
+          </Key>
+          <Property Name="AirportId" Type="Int32" Nullable="false" />
+          <Property Name="IataIdent" Type="String" MaxLength="3" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Ident" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IcaoCode" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lat" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Lon" Type="String" MaxLength="11" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Trips" Relationship="Self.FK_Trip_Airport" FromRole="Airport" ToRole="Trip" />
+        </EntityType>
+        <EntityType Name="TransType">
+          <Key>
+            <PropertyRef Name="TransTypeId" />
+          </Key>
+          <Property Name="TransTypeId" Type="Int32" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Trips" Relationship="Self.FK_Trip_TransType" FromRole="TransType" ToRole="Trip" />
+        </EntityType>
+        <EntityType Name="Trip">
+          <Key>
+            <PropertyRef Name="TripId" />
+          </Key>
+          <Property Name="TripId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TripDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="AirportId" Type="Int32" Nullable="false" />
+          <Property Name="TransTypeId" Type="Int32" Nullable="false" />
+          <Property Name="GroupName" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="GroupSize" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Airport" Relationship="Self.FK_Trip_Airport" FromRole="Trip" ToRole="Airport" />
+          <NavigationProperty Name="TransType" Relationship="Self.FK_Trip_TransType" FromRole="Trip" ToRole="TransType" />
+        </EntityType>
+        <Association Name="FK_Trip_Airport">
+          <End Role="Airport" Type="Self.Airport" Multiplicity="1" />
+          <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Airport">
+              <PropertyRef Name="AirportId" />
+            </Principal>
+            <Dependent Role="Trip">
+              <PropertyRef Name="AirportId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Trip_TransType">
+          <End Role="TransType" Type="Self.TransType" Multiplicity="1" />
+          <End Role="Trip" Type="Self.Trip" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TransType">
+              <PropertyRef Name="TransTypeId" />
+            </Principal>
+            <Dependent Role="Trip">
+              <PropertyRef Name="TransTypeId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TripEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Airports" EntityType="Self.Airport" />
+          <EntitySet Name="TransTypes" EntityType="Self.TransType" />
+          <EntitySet Name="Trips" EntityType="Self.Trip" />
+          <AssociationSet Name="FK_Trip_Airport" Association="Self.FK_Trip_Airport">
+            <End Role="Airport" EntitySet="Airports" />
+            <End Role="Trip" EntitySet="Trips" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Trip_TransType" Association="Self.FK_Trip_TransType">
+            <End Role="TransType" EntitySet="TransTypes" />
+            <End Role="Trip" EntitySet="Trips" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="devcodeModelStoreContainer" CdmEntityContainer="TripEntities">
+          <EntitySetMapping Name="Airports">
+            <EntityTypeMapping TypeName="devcodeModel.Airport">
+              <MappingFragment StoreEntitySet="Airport">
+                <ScalarProperty Name="AirportId" ColumnName="AirportId" />
+                <ScalarProperty Name="IataIdent" ColumnName="IataIdent" />
+                <ScalarProperty Name="Ident" ColumnName="Ident" />
+                <ScalarProperty Name="IcaoCode" ColumnName="IcaoCode" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Lat" ColumnName="Lat" />
+                <ScalarProperty Name="Lon" ColumnName="Lon" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TransTypes">
+            <EntityTypeMapping TypeName="devcodeModel.TransType">
+              <MappingFragment StoreEntitySet="TransType">
+                <ScalarProperty Name="TransTypeId" ColumnName="TransTypeId" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trips">
+            <EntityTypeMapping TypeName="devcodeModel.Trip">
+              <MappingFragment StoreEntitySet="Trip">
+                <ScalarProperty Name="TripId" ColumnName="TripId" />
+                <ScalarProperty Name="TripDate" ColumnName="TripDate" />
+                <ScalarProperty Name="AirportId" ColumnName="AirportId" />
+                <ScalarProperty Name="TransTypeId" ColumnName="TransTypeId" />
+                <ScalarProperty Name="GroupName" ColumnName="GroupName" />
+                <ScalarProperty Name="GroupSize" ColumnName="GroupSize" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

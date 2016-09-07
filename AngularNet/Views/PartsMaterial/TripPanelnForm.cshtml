@@ -1,0 +1,79 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div ng-controller="TripListnFormController as gc">
+    <div class="col-sm-6">
+        <div class="list-group">
+            <div class="list-group-item" ng-repeat="model in gc.trip.list  | filter:ac.searchText" ng-form="tripForm">
+                                <span class="badge">{{model.groupSize}}</span>
+                <div ng-click="gc.editTrip(model, tripForm)">
+                    <h4>{{model.tripDate_ | date : "MM/dd/yyyy"}}, {{model.airportId_.text}} - {{model.airportId_.text2}}</h4>
+                    <p>{{model.transTypeId_.text}}, {{model.groupName}}</p>
+                </div>
+                <div ng-if="gc.model === model">
+                    <div class="row" >
+                        <div class="col-sm-1"></div>
+                        <div class="col-sm-7" style="margin-top:20px">
+                            <form role="form" name="TripForm" novalidate>
+                                <div class="form-group">
+                                    <label for="tripDate" class="control-label">Trip Date</label>
+                                    <div class="input-group">
+                                        <input type="text" ng-model="gc.model.tripDate_" datepicker-popup="MM/dd/yyyy" class="form-control" id="tripDate" is-open="calop" required>
+                                        <span class="input-group-btn">
+                                            <button type="button" class="btn btn-default"
+                                                    ng-click="calop = !calop;$event.stopPropagation()">
+                                                <i class="glyphicon glyphicon-calendar"></i>
+                                            </button>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="airportId" class="control-label">Airport IATA</label>
+                                    <input type="text" class="form-control" ng-model="gc.model.airportId_" id="airportId" required
+                                           typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-on-select="gc.model.airportId = $item.value"
+                                           typeahead-editable="false" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="airportId" class="control-label">Airport Name</label>
+                                    <div class="form-control-static">
+                                        {{gc.model.airportId_.text2}}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="transTypeId" class="control-label">Trans Type Id</label>
+                                    <select ng-model="gc.model.transTypeId" ng-options="o.value as o.text for o in gc.ds.ref.transTypes"
+                                            class="form-control" id="transTypeId" required not-set="-1"></select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="groupName" class="control-label">Group Name</label>
+                                    <input type="text" ng-model="gc.model.groupName" class="form-control" id="groupName" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="groupSize" class="control-label">Group Size</label>
+                                    <input type="number" ng-model="gc.model.groupSize" class="form-control" id="groupSize">
+                                </div>
+                            </form>
+                            <div>
+                                <button type="button" class="btn btn-primary" ng-click="gc.saveTrip(TripForm); $event.stopPropagation();" ng-init="gc.formInit(TripForm)"
+                                        ng-disabled="!(TripForm.$dirty && TripForm.$valid)">
+                                    Save
+                                </button>
+
+                                <button type="button" class="btn btn-primary" ng-click="gc.cancel(); $event.stopPropagation();">Cancel</button>
+                                <button type="button" class="btn btn-warning" ng-click="gc.deleteTrip(); $event.stopPropagation();"
+                                        ng-show="!model.isNew">
+                                    Delete
+                                </button>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+ 

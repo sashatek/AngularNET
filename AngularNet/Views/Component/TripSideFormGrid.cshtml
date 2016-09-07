@@ -1,0 +1,54 @@
+﻿
+@{
+    Layout = null;
+}
+
+<div class="row">
+    <div class="col-md-9">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Trip Date</th>
+                <th>Airport</th>
+                <th>Airport Name</th>
+                <th>Trans Type Id</th>
+                <th>Group Name</th>
+                <th>Group Size</th>
+                <th>
+                    <button type="button" class="btn btn-primary btn-xs" ng-click="gc.addTrip(tripForm)">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </button>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="model in gc.trip.list  | filter:ac.searchText" ng-form="tripForm" ng-click="gc.editTrip(model, tripForm)"
+                ng-class="{selected : gc.trip.model === model}">
+                <td>
+                    {{model.tripDate_ | date : "MM/dd/yyyy"}}
+                </td>
+                <td>{{model.airportId_.text}}</td>
+                <td>{{model.airportId_.text2}}</td>
+                <td>
+                    {{model.transTypeId_.text}}
+                </td>
+                <td>
+                    {{model.groupName}}
+                </td>
+                <td>
+                    {{model.groupSize}}
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3">
+        <div ng-if="gc.trip.model">
+            <trip-form ds="gc.ds" form-init="gc.onFormInit(form)" model="gc.trip.model" on-cancel="gc.cancel()"
+                            on-save="gc.saveTrip(model, form)" on-delete="gc.deleteTrip(model)" show-delete="true"></trip-form>
+
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,59 @@
+﻿@{
+    Layout = null;
+}
+<table class="datatable datatableL">
+    <tr>
+        <th><a ng-click="gc.tripSort='tripDate_';gc.tripRev=!gc.tripRev">Trip Date</a></th>
+        <th>Airport</th>
+        <th>Airport Name</th>
+        <th>Trans Type Id</th>
+        <th>Group Name</th>
+        <th>Group Size</th>
+        <th></th>
+        <th></th>
+    </tr>
+    <tr ng-repeat="model in gc.trip.list  | filter:gc.search | orderBy : gc.tripSort:gc.tripRev" ng-form="tripForm">
+        <td>
+            <div class="input-group">
+                <input type="text" ng-model="model.tripDate_" uib-datepicker-popup="MM/dd/yyyy" class="form-control dateBox"
+                       id="tripDate" is-open="calop" required style="width: 100px" datepicker-append-to-body="true">
+                <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"
+                                ng-click="calop = !calop">
+                            <i class="glyphicon glyphicon-calendar"></i>
+                        </button>
+                    </span>
+            </div>
+
+        </td>
+        <td>
+            <input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
+                   uib-typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                   typeahead-on-select="model.airportId = $item.value"/>
+        </td>
+        <td>{{model.airportId_.text2}}</td>
+        <td>
+            <select ng-model="model.transTypeId" ng-options="o.value as o.text for o in gc.ds.ref.transTypes"
+                    class="form-control" id="transTypeId" required not-set="-1"></select>
+        </td>
+        <td>
+            <input type="text" ng-model="model.groupName" class="form-control" id="groupName" required>
+        </td>
+        <td>
+            <input type="number" ng-model="model.groupSize" class="form-control groupSize" id="groupSize">
+        </td>
+        <td>
+            <button type="button" class="btn btn-primary btn-xs" ng-click="gc.saveTrip(model, tripForm)"
+                    ng-disabled="!(tripForm.$dirty && tripForm.$valid)">
+                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+            </button>
+        </td>
+        <td>
+            <button type="button" class="btn btn-warning  btn-xs" ng-click="gc.deleteTrip(model, tripForm)"
+                    ng-show="!model.isNew">
+                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+            </button>
+        </td>
+    </tr>
+</table>
+

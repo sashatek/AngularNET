@@ -1,0 +1,74 @@
+﻿ table.datatable {
+        border: solid 1px #e8eef4;
+        border-collapse: collapse;
+        width: inherit;
+    }
+
+    table.datatable td,table.datatable th {
+        padding: 5px;
+        border: solid 1px #e8eef4;
+    }
+    
+       table.datatableL td,table.datatableL th {
+        padding: 0 5px;
+        border: solid 1px #e8eef4;
+    }
+    table.datatable td {
+        white-space: nowrap;
+    }
+
+	/*table.datatable th {
+		padding: 6px 5px;
+		text-align: left;
+		background-color: #0066FF;
+		border: solid 1px #e8eef4;
+		color: #FFFFFF;
+		font-weight: bold;
+	}*/
+
+        /*table.datatable th {
+            padding: 6px 5px;
+            text-align: left;
+            background-color: #fff;
+            border: solid 2px #0067b1;
+            color: #0067b1;
+            font-weight: bold;
+        }*/
+
+
+tr.selected {
+	background-color: #f2f0f0;
+}
+
+input.ng-invalid,  select.ng-invalid, textarea.ng-invalid{
+    border:1px solid Red;
+}
+
+.tripDate {
+	width: 70px;
+}
+
+.groupName {
+	width: 150px;
+}
+
+.groupSize {
+	width: 70px;
+}
+.iataBox {
+	width: 70px  !important;
+}
+.arptName {
+	width: 150px;
+}
+
+.dateBox {
+	width: 100px;
+}
+
+/*tr.selected {
+	background-color: #337ab7;
+	color: white;
+}*/
+
+input[type=text]::-ms-clear { display: none; }

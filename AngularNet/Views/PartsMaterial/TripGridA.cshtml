@@ -1,0 +1,96 @@
+﻿@{
+    Layout = null;
+}
+
+@* Material Design *@
+<style>
+    .md-datepicker-input {
+        min-width: 80px;
+        width: 80px;
+}
+
+    /*.ttt {
+    width: 700px;
+}
+    .md-virtual-repeat-container.md-autocomplete-suggestions-container {
+     width:700px !important;
+}*/
+</style>
+<div ng-controller="TripGridAController as gc">
+    <md-content>
+
+            <h2>Grid Always Editable</h2>
+            <table class="datatable datatableL" style="width:100%">
+                <tr>
+                    <th><a ng-click="gc.tripSort='tripDate_';gc.tripRev=!gc.tripRev">Trip Date</a></th>
+                    <th>Airport</th>
+                    <th>Airport Name</th>
+                    <th>Trans Type Id</th>
+                    <th>Group Name</th>
+                    <th>Group Size</th>
+                    <th></th>
+                </tr>
+                <tr ng-repeat="model in gc.trip.list  | filter:ac.searchText | orderBy : gc.tripSort:gc.tripRev" ng-form="tripForm">
+                    <td>
+                        <md-datepicker ng-model="model.tripDate_" md-placeholder="Enter date"></md-datepicker
+                    </td>
+                    <td>
+                        @*<input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
+                               typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                               typeahead-on-select="model.airportId = $item.value"/>*@
+                            <md-autocomplete ng-disabled="false" md-menu-class="ttt"
+                                             md-no-cache="true" md-select-on-match="true"
+                                             md-selected-item="model.airportId_"
+                                             md-search-text-change="gc.searchTextChange(gc.searchText)"
+                                             md-search-text="model.searchText"
+                                             md-selected-item-change="model.airportId = item.value"
+                                             md-items="item in gc.ds.lookArpt(model.searchText)"
+                                             md-item-text="item.text"
+                                             md-min-length="1"
+                                             placeholder="Pick an Airport">
+                                <md-item-template>
+                                    <span md-highlight-text="gc.searchText" md-highlight-flags="^i" class="item-metadata">{{item.text}}</span>
+                                </md-item-template>
+                                <md-not-found>
+                                    No states matching "{{ctrl.searchText}}" were found.
+                                    <a ng-click="ctrl.newState(ctrl.searchText)">Create a new one!</a>
+                                </md-not-found>
+                            </md-autocomplete>
+
+
+                    </tdstyle="width:50px">
+                    <td>{{model.airportId_.text2}}</td>
+                    <td>
+                        <select ng-model="model.transTypeId" ng-options="o.value as o.text for o in gc.ds.ref.transTypes"
+                                class="form-control" id="transTypeId" required not-set="-1"></select>
+                    </td>
+                    <td>
+                        <input type="text" ng-model="model.groupName" class="form-control" id="groupName" required>
+                    </td>
+                    <td>
+                        <input type="number" ng-model="model.groupSize" class="form-control groupSize" id="groupSize">
+                    </td>
+                    <td>
+                        <div class="btn-toolbar" role="toolbar">
+                            <md-button class="md-icon-button md-primary" aria-label="Settings"
+                                       ng-click="gc.saveTrip(model, tripForm)"
+                                       ng-disabled="!(tripForm.$dirty && tripForm.$valid)">
+                                <md-icon md-svg-icon="~/img/icons/ic_check_circle_24px.svg"></md-icon>
+                            </md-button>
+                            <md-button class="md-icon-button md-warn" aria-label="Settings"
+                                       ng-click="gc.deleteTrip(model, tripForm)"
+                                       ng-show="!model.isNew">
+                                <md-icon md-svg-icon="~/img/icons/ic_delete_24px.svg"></md-icon>
+                            </md-button>
+                            <md-button ng-click="gc.saveTrip(model, tripForm)"
+                                       ng-disabled="!(tripForm.$dirty && tripForm.$valid)" class="md-primary">Save</md-button>
+                            <md-button type="button" class="md-warn" ng-click="gc.deleteTrip(model, tripForm)"
+                                       ng-show="!model.isNew">Delete
+                            </md-button>
+                        </div>
+                    </td>
+                </tr>
+            </table>
+    </md-content>>
+</div>
+
