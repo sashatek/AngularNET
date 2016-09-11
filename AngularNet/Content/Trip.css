@@ -72,3 +72,7 @@ input.ng-invalid,  select.ng-invalid, textarea.ng-invalid{
 }*/
 
 input[type=text]::-ms-clear { display: none; }
+
+.navbar-brand {
+    color: darkblue;
+}
