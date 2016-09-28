@@ -8,19 +8,10 @@ module Application {
             "$scope"
         ];
 
-        sTest: string = "String from the form controller";
-        errorMessage: string = null;
         trip: TripWorker = new TripWorker();
-        num: number = 7;
-        $ctrl: any;
         private ds: Services.DataService;
         private onSave: Function;
         private onDelete: Function;
-
-        //showDelete: boolean = false;
-
-        //tripSort: any = ";
-        //tripRev: boolean = false;
 
         constructor(private $scope){
         }

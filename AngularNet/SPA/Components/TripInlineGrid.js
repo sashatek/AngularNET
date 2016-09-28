@@ -4,7 +4,6 @@ var Application;
         function TripInlineInlineController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.errorMessage = null;
             this.trip = new TripWorker();
             this.model = null;
             this.modelCopy = null;

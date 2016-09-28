@@ -10,8 +10,6 @@ module Application {
             "$scope"
         ];
 
-        sTest: string = "String from the Trip ListPopController";
-        errorMessage: string = null;
         trip: TripWorker = new TripWorker();
         showForm: boolean = false;
         private ds: Services.DataService;

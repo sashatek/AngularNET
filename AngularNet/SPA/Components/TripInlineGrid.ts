@@ -8,7 +8,6 @@
             "$scope"
         ];
 
-        errorMessage: string = null;
         trip: TripWorker = new TripWorker();
         model: TripModel = null;
         modelCopy: TripModel = null;

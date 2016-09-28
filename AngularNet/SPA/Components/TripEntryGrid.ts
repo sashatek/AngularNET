@@ -55,7 +55,7 @@ module Application {
         }
 
 
-        newTrip() {
+        newTrip():void {
             var model = new TripModel();
             model.isNew = true;
             TripModel.onGet(model);

@@ -8,7 +8,6 @@
             "$scope"
         ];
 
-        errorMessage: string = null;
         trip: TripWorker = new TripWorker();
         showForm: boolean = false;
         editMode: number = 0;

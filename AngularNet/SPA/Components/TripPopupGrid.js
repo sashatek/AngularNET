@@ -7,8 +7,6 @@ var Application;
             this.$modalInstance = $modalInstance;
             this.model = model;
             this.ds = ds;
-            this.sTest = "String from the Trip Pop Form controller";
-            this.errorMessage = null;
             this.trip = new TripWorker();
             this.onAddTrip = function (model) {
             };

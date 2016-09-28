@@ -229,18 +229,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="angular-material\angular-animate.js" />
-    <Content Include="angular-material\angular-animate.min.js" />
-    <Content Include="angular-material\angular-aria.js" />
-    <Content Include="angular-material\angular-aria.min.js" />
-    <Content Include="angular-material\angular-material.css" />
-    <Content Include="angular-material\angular-material.js" />
-    <Content Include="angular-material\angular-material.layouts.css" />
-    <Content Include="angular-material\angular-material.layouts.min.css" />
-    <Content Include="angular-material\angular-material.min.css" />
-    <Content Include="angular-material\angular-material.min.js" />
-    <Content Include="angular-material\angular.js" />
-    <Content Include="angular-material\angular.min.js" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -259,7 +247,6 @@
     <Content Include="img\icons\ic_delete_24px.svg" />
     <Content Include="img\icons\ic_people_24px.svg" />
     <Content Include="Scripts\angular-mocks.js" />
-    <Content Include="angular-material\package.json" />
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

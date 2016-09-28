@@ -1,15 +1,9 @@
 var Application;
 (function (Application) {
     var TripFormController = (function () {
-        //showDelete: boolean = false;
-        //tripSort: any = ";
-        //tripRev: boolean = false;
         function TripFormController($scope) {
             this.$scope = $scope;
-            this.sTest = "String from the form controller";
-            this.errorMessage = null;
             this.trip = new TripWorker();
-            this.num = 7;
         }
         TripFormController.prototype.save = function (model, form) {
             this.onSave({ model: model, form: form });

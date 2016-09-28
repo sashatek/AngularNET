@@ -14,8 +14,6 @@ module Application {
             "ds"
         ];
 
-        sTest: string = "String from the Trip Pop Form controller";
-        errorMessage: string = null;
         trip: TripWorker = new TripWorker();
         //private ds: Services.DataService;
 

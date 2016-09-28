@@ -5,7 +5,6 @@ var Application;
         function TripNavToFormController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.errorMessage = null;
             this.trip = new TripWorker();
             this.showForm = false;
             this.editMode = 0;

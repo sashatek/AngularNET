@@ -4,8 +4,6 @@ var Application;
         function TripSideFormGridController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.sTest = "String from the Trip ListPopController";
-            this.errorMessage = null;
             this.trip = new TripWorker();
             this.showForm = false;
             this.onGetAllTrips = function (trips) {
