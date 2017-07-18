@@ -32,7 +32,7 @@
                                 <div class="form-group">
                                     <label for="airportId" class="control-label">Airport IATA</label>
                                     <input type="text" class="form-control" ng-model="gc.model.airportId_" id="airportId" required
-                                           typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-on-select="gc.model.airportId = $item.value"
+                                           typeahead="o as o.text for o in gc.ds.lookupArpt($viewValue)" typeahead-on-select="gc.model.airportId = $item.value"
                                            typeahead-editable="false" />
                                 </div>
                                 <div class="form-group">

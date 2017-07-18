@@ -4,74 +4,76 @@ var Application;
         function TripSideFormGridController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.trip = new TripWorker();
+            this.list = null;
+            this.model = null;
+            this.modelCopy = null;
             this.showForm = false;
-            this.onGetAllTrips = function (trips) {
-                _this.trip.list = trips;
-                _this.newTrip();
+            this.onGetAll = function (data) {
+                _this.list = data;
+                _this.newRow();
             };
-            this.onAddTrip = function (model) {
+            this.onAdd = function (model) {
                 model.isNew = false;
-                _this.trip.list.unshift(model);
-                _this.trip.model = _this.trip.modelCopy = null;
+                _this.list.unshift(model);
+                _this.model = _this.modelCopy = null;
             };
-            this.onSaveTrip = function (model) {
-                _this.trip.model = _this.trip.modelCopy = null;
+            this.onSave = function (model) {
+                if (model === _this.model) {
+                    _this.model = _this.modelCopy = null;
+                }
             };
-            this.onDeleteTrip = function (model) {
-                var index = _this.trip.list.indexOf(model);
-                _this.trip.list.splice(index, 1);
-                _this.trip.model = null;
-                _this.trip.modelCopy = null;
+            this.onDelete = function (model) {
+                var index = _this.list.indexOf(model);
+                _this.list.splice(index, 1);
+                _this.model = null;
+                _this.modelCopy = null;
             };
-            this.trip = this.ds.trip;
             $scope.dateToMdy = dateToMdy;
             this.load();
         }
         TripSideFormGridController.prototype.load = function () {
             var qry = 0;
-            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAllTrips);
+            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
         };
-        TripSideFormGridController.prototype.addTrip = function () {
-            this.trip.model = this.newTrip();
-            this.trip.modelCopy = null;
+        TripSideFormGridController.prototype.add = function (form) {
+            this.model = this.newRow();
+            this.modelCopy = null;
             ;
         };
-        TripSideFormGridController.prototype.editTrip = function (model, form) {
-            if (this.trip.model && this.trip.model.form && this.trip.model.form.$dirty) {
+        TripSideFormGridController.prototype.edit = function (model, form) {
+            if (this.model && this.model.form && this.model.form.$dirty) {
                 return;
             }
-            this.trip.model = model;
-            this.trip.modelCopy = angular.copy(model);
+            this.model = model;
+            this.modelCopy = angular.copy(model);
         };
         TripSideFormGridController.prototype.onFormInit = function (form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         };
-        TripSideFormGridController.prototype.saveTrip = function (model, form) {
+        TripSideFormGridController.prototype.save = function (model, form) {
             form.$setPristine();
-            this.ds.saveModel(EntityType.Trip, this.trip.model, this.onAddTrip, this.onSaveTrip);
+            this.ds.saveModel(EntityType.Trip, this.model, this.onAdd, this.onSave);
         };
-        TripSideFormGridController.prototype.deleteTrip = function (model) {
-            this.ds.deleteModel(EntityType.Trip, this.trip.model, this.onDeleteTrip);
+        TripSideFormGridController.prototype.delete = function (model) {
+            this.ds.deleteModel(EntityType.Trip, this.model, this.onDelete);
         };
-        TripSideFormGridController.prototype.newTrip = function () {
+        TripSideFormGridController.prototype.newRow = function () {
             var model = new TripModel();
             model.isNew = true;
             TripModel.onGet(model);
             return model;
         };
         TripSideFormGridController.prototype.cancel = function () {
-            if (this.trip.modelCopy) {
-                angular.copy(this.trip.modelCopy, this.trip.model);
+            if (this.modelCopy) {
+                angular.copy(this.modelCopy, this.model);
             }
-            this.trip.model = null;
-            this.trip.modelCopy = null;
+            this.model = null;
+            this.modelCopy = null;
         };
         TripSideFormGridController.prototype.init = function (form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         };
         TripSideFormGridController.$inject = [
-            "DataService",
             "$scope"
         ];
         return TripSideFormGridController;

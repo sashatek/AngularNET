@@ -2,7 +2,7 @@
     Layout = null;
 }
 
-<form role="form" name="TripForm" novalidate>
+<form role="form" name="$ctrl.form" novalidate>
     {{$ctrl.showDelete}}
     <div class="form-group">
         <label for="tripDate" class="control-label">Trip Date</label>
@@ -20,7 +20,7 @@
     <div class="form-group">
         <label for="airportId" class="control-label">Airport IATA</label>
         <input type="text" class="form-control" ng-model="$ctrl.model.airportId_" id="airportId" required
-               uib-typeahead="o as o.text for o in $ctrl.ds.lookArpt($viewValue)" typeahead-on-select="$ctrl.model.airportId = $item.value"
+               uib-typeahead="o as o.text for o in $ctrl.ds.lookupArpt($viewValue)" typeahead-on-select="$ctrl.model.airportId = $item.value"
                typeahead-editable="false" typeahead-select-on-exact="true"/>
     </div>
     <div class="form-group">
@@ -50,9 +50,9 @@
     </div>
     <div class="pull-left">
         <button type="button" class="btn btn-primary" 
-                ng-click="$ctrl.save(model, TripForm);" 
-                ng-init="$ctrl.formInit({form : TripForm})"
-                ng-disabled="!(TripForm.$dirty && TripForm.$valid)">
+                ng-click="$ctrl.save(model, $ctrl.form);" 
+                ng-init="$ctrl.formInit({form : $ctrl.form})"
+                ng-disabled="!($ctrl.form.$dirty && $ctrl.form.$valid)">
             Save
         </button>
         <button type="button" class="btn btn-primary" ng-click="$ctrl.onCancel()">Cancel</button>

@@ -19,30 +19,6 @@ var Application;
                     { entityType: EntityType.Trip, url: "api/Trip", varName: "trip", pkField: "tripId" },
                 ];
                 this.trip = new TripWorker();
-                this.getRefs = function (onCallBack) {
-                    var _this = this;
-                    var urlBase = urlApp + 'api/Ref';
-                    this.http.get(urlBase)
-                        .success(function (data) {
-                        _this.ref = data;
-                        if (onCallBack) {
-                            onCallBack(data);
-                        }
-                    })
-                        .error(function (error) {
-                        _this.errorMessage = 'Unable to get reference data: ' + error.Message;
-                        alert(_this.errorMessage);
-                    });
-                };
-                //Lookups
-                //
-                this.urlLookArpt = urlApp + 'api/Lookup/Iata';
-                this.lookArpt = function (term) {
-                    return this.http.get(this.urlLookArpt + "/" + term)
-                        .then(function (response) {
-                        return response.data;
-                    });
-                };
                 //// Short Trip Service calls
                 ////
                 //trip: TripWorker = new TripWorker();
@@ -69,19 +45,43 @@ var Application;
                 this.urlTrip = urlApp + 'api/Trip';
                 this.state.viewMode = 0;
             }
+            DataService.prototype.getRefs = function (onCallBack) {
+                var _this = this;
+                var urlBase = urlApp + 'api/Ref';
+                this.http.get(urlBase)
+                    .then(function (response) {
+                    _this.ref = response.data;
+                    if (onCallBack) {
+                        onCallBack(response.data);
+                    }
+                })
+                    .catch(function (response) {
+                    _this.errorMessage = 'Unable to get reference data: ' + response.data.Message;
+                    alert(_this.errorMessage);
+                });
+            };
+            ;
+            //Lookups
+            //
+            DataService.prototype.lookupArpt = function (term) {
+                var urlLookupArpt = urlApp + "api/Lookup/Iata";
+                return this.http.get(urlLookupArpt + "/" + term)
+                    .then(function (response) { return response.data; });
+            };
+            ;
             DataService.prototype.getAllModels = function (etype, qry, callBack) {
                 var _this = this;
                 if (callBack === void 0) { callBack = angular.noop; }
                 var that = this;
                 var config = this.configs[etype];
                 this.http.get(urlApp + config.url + "/GetAll/" + qry)
-                    .success(function (data) {
-                    _this[config.varName].list = data;
+                    .then(function (response) {
+                    _this[config.varName].list = response.data;
                     eval(EntityType[etype] + "Model.onGetAll(that[config.varName].list)");
                     callBack(_this[config.varName].list);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + response.data.Message;
                     alert(_this.errorMessage);
                 });
             };
@@ -91,49 +91,58 @@ var Application;
                 var that = this;
                 var config = this.configs[etype];
                 this.http.get(urlApp + config.url + '/' + id)
-                    .success(function (data) {
-                    _this[config.varName].model = data;
+                    .then(function (response) {
+                    _this[config.varName].model = response.data;
                     eval(EntityType[etype] + "Model.onGet(that[config.varName].model)");
                     callBack(_this[config.varName].model);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + response.data.Message;
                     alert(_this.errorMessage);
                 });
             };
-            DataService.prototype.saveModel = function (etype, model, callBackAdd, callBackSave) {
-                var _this = this;
-                if (callBackAdd === void 0) { callBackAdd = angular.noop; }
-                if (callBackSave === void 0) { callBackSave = angular.noop; }
-                var that = this;
-                var config = this.configs[etype];
-                eval(EntityType[etype] + "Model.onSave(model)");
+            DataService.prototype.saveModel = function (etype, model, addCallBack, updateCallBack) {
+                if (addCallBack === void 0) { addCallBack = angular.noop; }
+                if (updateCallBack === void 0) { updateCallBack = angular.noop; }
                 if (model.isNew) {
-                    if (config.parentPkField) {
-                        model[config.parentPkField] = this[config.parent][config.parentPkField]; // If master-detail
-                    }
-                    this.http.post(urlApp + config.url, model)
-                        .success(function (data) {
-                        if (config.pkField) {
-                            model[config.pkField] = data[config.pkField]; // Only if auto PK
-                        }
-                        callBackAdd(model);
-                    })
-                        .error(function (error) {
-                        _this.errorMessage = "Unable to add " + EntityType[etype] + " data: " + error.Message;
-                        alert(_this.errorMessage);
-                    });
+                    this.addModel(etype, model, addCallBack);
                 }
                 else {
-                    this.http.put(urlApp + config.url + '/' + model[config.pkField], model)
-                        .success(function (data) {
-                        callBackSave(model);
-                    })
-                        .error(function (error) {
-                        _this.errorMessage = "Unable to save " + EntityType[etype] + " data: " + error.Message;
-                        alert(_this.errorMessage);
-                    });
+                    this.updateModel(etype, model, updateCallBack);
                 }
+            };
+            DataService.prototype.addModel = function (etype, model, callBack) {
+                var _this = this;
+                var config = this.configs[etype];
+                eval(EntityType[etype] + "Model.onSave(model)");
+                if (config.parentPkField) {
+                    model[config.parentPkField] = this[config.parent][config.parentPkField]; // If master-detail
+                }
+                this.http.post(urlApp + config.url, model)
+                    .then(function (response) {
+                    if (config.pkField) {
+                        model[config.pkField] = response.data[config.pkField]; // Only if auto PK
+                    }
+                    callBack(model);
+                })
+                    .catch(function (response) {
+                    _this.errorMessage = "Unable to add " + EntityType[etype] + " data: " + response.data.Message;
+                    alert(_this.errorMessage);
+                });
+            };
+            DataService.prototype.updateModel = function (etype, model, callBack) {
+                var _this = this;
+                if (callBack === void 0) { callBack = angular.noop; }
+                var config = this.configs[etype];
+                eval(EntityType[etype] + "Model.onSave(model)");
+                this.http.put(urlApp + config.url + '/' + model[config.pkField], model)
+                    .then(function (response) {
+                    callBack(model);
+                })
+                    .catch(function (response) {
+                    _this.errorMessage = "Unable to save " + EntityType[etype] + " data: " + response.data.Message;
+                    alert(_this.errorMessage);
+                });
             };
             DataService.prototype.deleteModel = function (etype, model, callBack) {
                 var _this = this;
@@ -144,11 +153,11 @@ var Application;
                     return false;
                 }
                 this.http.delete(urlApp + config.url + '/' + model[config.pkField])
-                    .success(function (data) {
+                    .then(function (response) {
                     callBack(model);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = "Unable to delete " + EntityType[etype] + " data: " + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = "Unable to delete " + EntityType[etype] + " data: " + response.data.Message;
                     alert(_this.errorMessage);
                 });
                 return true;
@@ -158,13 +167,13 @@ var Application;
                 var _this = this;
                 if (callBack === void 0) { callBack = angular.noop; }
                 this.http.get(this.urlTrip + "/GetAll/" + qry)
-                    .success(function (data) {
-                    _this.trip.list = data;
+                    .then(function (response) {
+                    _this.trip.list = response.data;
                     TripModel.onGetAll(_this.trip.list);
                     callBack(_this.trip.list);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = 'Unable to get Trips data: ' + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = 'Unable to get Trips data: ' + response.data.Message;
                     alert(_this.errorMessage);
                 });
             };
@@ -172,13 +181,13 @@ var Application;
                 var _this = this;
                 if (callBack === void 0) { callBack = angular.noop; }
                 this.http.get(this.urlTrip + '/' + id)
-                    .success(function (data) {
-                    _this.trip.model = data;
+                    .then(function (response) {
+                    _this.trip.model = response.data;
                     TripModel.onGet(_this.trip.model);
                     callBack(_this.trip.model);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = 'Unable to get Trip data: ' + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = 'Unable to get Trip data: ' + response.data.Message;
                     alert(_this.errorMessage);
                 });
             };
@@ -190,22 +199,23 @@ var Application;
                 if (model.isNew) {
                     //model.parent.tripId = parent.tripId // If master-detail
                     this.http.post(this.urlTrip, model)
-                        .success(function (data) {
+                        .then(function (response) {
+                        var data = response.data;
                         model.tripId = data.tripId; // Only if auto PK
                         callBackAdd(model);
                     })
-                        .error(function (error) {
-                        _this.errorMessage = 'Unable to add Trip data: ' + error.Message;
+                        .catch(function (response) {
+                        _this.errorMessage = 'Unable to add Trip data: ' + response.data.Message;
                         alert(_this.errorMessage);
                     });
                 }
                 else {
                     this.http.put(this.urlTrip + '/' + model.tripId, model)
-                        .success(function (data) {
+                        .then(function (response) {
                         callBackSave(model);
                     })
-                        .error(function (error) {
-                        _this.errorMessage = 'Unable to save Trip data: ' + error.Message;
+                        .catch(function (response) {
+                        _this.errorMessage = 'Unable to save Trip data: ' + response.data.Message;
                         alert(_this.errorMessage);
                     });
                 }
@@ -217,11 +227,11 @@ var Application;
                     return false;
                 }
                 this.http.delete(this.urlTrip + '/' + model.tripId)
-                    .success(function (data) {
+                    .then(function (response) {
                     callBack(model);
                 })
-                    .error(function (error) {
-                    _this.errorMessage = 'Unable to delete Trip data: ' + error.Message;
+                    .catch(function (response) {
+                    _this.errorMessage = 'Unable to delete Trip data: ' + response.data.Message;
                     alert(_this.errorMessage);
                 });
                 return true;

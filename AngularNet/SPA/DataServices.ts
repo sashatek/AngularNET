@@ -31,44 +31,43 @@ module Application.Services {
         }
 
 
-        getRefs = function(onCallBack) {
+        getRefs(onCallBack) {
             var urlBase = urlApp + 'api/Ref';
             this.http.get(urlBase)
-                .success((data) => {
-                    this.ref = data;
+                .then((response) => {
+                    this.ref = response.data;
                     if (onCallBack) {
-                        onCallBack(data);
+                        onCallBack(response.data);
                     }
                 })
-                .error((error) => {
-                    this.errorMessage = 'Unable to get reference data: ' + error.Message;
+                .catch((response) => {
+                    this.errorMessage = 'Unable to get reference data: ' + response.data.Message;
                     alert(this.errorMessage);
+
 
                 });
         };
-
 
         //Lookups
         //
-        urlLookArpt: string = urlApp + 'api/Lookup/Iata';
-        lookArpt = function(term) {
-            return this.http.get(this.urlLookArpt + "/" + term)
-                .then(function(response) {
-                    return response.data;
-                });
+        lookupArpt(term) {
+            var urlLookupArpt: string = urlApp + "api/Lookup/Iata";
+            return this.http.get(urlLookupArpt + "/" + term)
+                .then(response => response.data);
         };
+
 
         getAllModels(etype: EntityType, qry, callBack: Function = angular.noop) {
             var that = this;
             var config = this.configs[etype];
             this.http.get(urlApp + config.url + "/GetAll/" + qry)
-                .success((data) => {
-                    this[config.varName].list = data;
+                .then((response) => {
+                    this[config.varName].list = response.data;
                     eval(EntityType[etype] + "Model.onGetAll(that[config.varName].list)");
                     callBack(this[config.varName].list);
                 })
-                .error((error) => {
-                    this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + error.Message;
+                .catch((response) => {
+                    this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + response.data.Message;
                     alert(this.errorMessage);
                 });
         }
@@ -77,48 +76,59 @@ module Application.Services {
             var that = this;
             var config = this.configs[etype];
             this.http.get(urlApp + config.url + '/' + id)
-                .success((data) => {
-                    this[config.varName].model = data;
+                .then((response) => {
+                    this[config.varName].model = response.data;
                     eval(EntityType[etype] + "Model.onGet(that[config.varName].model)");
                     callBack(this[config.varName].model);
                 })
-                .error((error) => {
-                    this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + error.Message;
+                .catch((response) => {
+                    this.errorMessage = "Unable to get " + EntityType[etype] + " data: " + response.data.Message;
                     alert(this.errorMessage);
                 });
         }
 
-        saveModel(etype: EntityType, model, callBackAdd: Function = angular.noop, callBackSave: Function = angular.noop) {
-            var that = this;
-            var config = this.configs[etype];
-            eval(EntityType[etype] + "Model.onSave(model)");
+        saveModel(etype: EntityType, model,
+            addCallBack: Function = angular.noop,
+            updateCallBack: Function = angular.noop) {
             if (model.isNew) {
-                if (config.parentPkField) {
-                    model[config.parentPkField] = this[config.parent][config.parentPkField]; // If master-detail
-                }
-                this.http.post(urlApp + config.url, model)
-                    .success((data) => {
-                        if (config.pkField) {
-                            model[config.pkField] = data[config.pkField]; // Only if auto PK
-                        }
-                        callBackAdd(model);
-                    })
-                    .error((error) => {
-                        this.errorMessage = "Unable to add " + EntityType[etype] + " data: " + error.Message;
-                        alert(this.errorMessage);
-                    });
+                this.addModel(etype, model, addCallBack);
             } else {
-                this.http.put(urlApp + config.url + '/' + model[config.pkField], model)
-                    .success((data) => {
-                        callBackSave(model);
-                    })
-                    .error((error) => {
-                        this.errorMessage = "Unable to save " + EntityType[etype] + " data: " + error.Message;
-                        alert(this.errorMessage);
-                    });
+                this.updateModel(etype, model, updateCallBack);
             }
         }
 
+        addModel(etype: EntityType, model, callBack) {
+            var config = this.configs[etype];
+            eval(EntityType[etype] + "Model.onSave(model)");
+            if (config.parentPkField) {
+                model[config.parentPkField] = this[config.parent][config.parentPkField]; // If master-detail
+            }
+            this.http.post(urlApp + config.url, model)
+                .then((response) => {
+                    if (config.pkField) {
+                        model[config.pkField] = response.data[config.pkField]; // Only if auto PK
+                    }
+                    callBack(model);
+                })
+                .catch((response) => {
+                    this.errorMessage = "Unable to add " + EntityType[etype] + " data: " + response.data.Message;
+                    alert(this.errorMessage);
+                });
+        }
+
+        updateModel(etype: EntityType,
+            model, callBack: Function = angular.noop) {
+            var config = this.configs[etype];
+            eval(EntityType[etype] + "Model.onSave(model)");
+            this.http.put(urlApp + config.url + '/' + model[config.pkField], model)
+                .then((response) => {
+                    callBack(model);
+                })
+                .catch((response) => {
+                    this.errorMessage = "Unable to save " + EntityType[etype] + " data: " + response.data.Message;
+                    alert(this.errorMessage);
+                });
+        }
 
         deleteModel(etype: EntityType, model, callBack: Function = angular.noop): boolean {
             var that = this;
@@ -127,17 +137,15 @@ module Application.Services {
                 return false;
             }
             this.http.delete(urlApp + config.url + '/' + model[config.pkField])
-                .success((data) => {
+                .then((response) => {
                     callBack(model);
                 })
-                .error((error) => {
-                    this.errorMessage = "Unable to delete " + EntityType[etype] + " data: " + error.Message;
+                .catch((response) => {
+                    this.errorMessage = "Unable to delete " + EntityType[etype] + " data: " + response.data.Message;
                     alert(this.errorMessage);
                 });
             return true;
         };
-    
-
 
 
 
@@ -178,26 +186,26 @@ module Application.Services {
 
         getAllTrips(qry, callBack: Function = angular.noop) {
             this.http.get(this.urlTrip + "/GetAll/" + qry)
-                .success((data: TripModel[]) => {
-                    this.trip.list = data;
+                .then((response) => {
+                    this.trip.list = <TripModel[]>response.data;
                     TripModel.onGetAll(this.trip.list);
                     callBack(this.trip.list);
                 })
-                .error((error) => {
-                    this.errorMessage = 'Unable to get Trips data: ' + error.Message;
+                .catch((response) => {
+                    this.errorMessage = 'Unable to get Trips data: ' + response.data.Message;
                     alert(this.errorMessage);
                 });
         }
 
         getTrip(id, callBack: Function = angular.noop) {
             this.http.get(this.urlTrip + '/' + id)
-                .success((data: TripModel) => {
-                    this.trip.model = data;
+                .then((response) => {
+                    this.trip.model = <TripModel>response.data;
                     TripModel.onGet(this.trip.model);
                     callBack(this.trip.model);
                 })
-                .error((error) => {
-                    this.errorMessage = 'Unable to get Trip data: ' + error.Message;
+                .catch((response) => {
+                    this.errorMessage = 'Unable to get Trip data: ' + response.data.Message;
                     alert(this.errorMessage);
                 });
         }
@@ -207,21 +215,22 @@ module Application.Services {
             if (model.isNew) {
                 //model.parent.tripId = parent.tripId // If master-detail
                 this.http.post(this.urlTrip, model)
-                    .success((data: TripModel) => {
+                    .then((response) => {
+                        var data = <TripModel>response.data;
                         model.tripId = data.tripId; // Only if auto PK
                         callBackAdd(model);
                     })
-                    .error((error) => {
-                        this.errorMessage = 'Unable to add Trip data: ' + error.Message;
+                    .catch((response) => {
+                        this.errorMessage = 'Unable to add Trip data: ' + response.data.Message;
                         alert(this.errorMessage);
                     });
             } else {
                 this.http.put(this.urlTrip + '/' + model.tripId, model)
-                    .success((data) => {
+                    .then((response) => {
                         callBackSave(model);
                     })
-                    .error((error) => {
-                        this.errorMessage = 'Unable to save Trip data: ' + error.Message;
+                    .catch((response) => {
+                        this.errorMessage = 'Unable to save Trip data: ' + response.data.Message;
                         alert(this.errorMessage);
                     });
             }
@@ -233,11 +242,11 @@ module Application.Services {
                 return false;
             }
             this.http.delete(this.urlTrip + '/' + model.tripId)
-                .success((data) => {
+                .then((response) => {
                     callBack(model);
                 })
-                .error((error) => {
-                    this.errorMessage = 'Unable to delete Trip data: ' + error.Message;
+                .catch((response) => {
+                    this.errorMessage = 'Unable to delete Trip data: ' + response.data.Message;
                     alert(this.errorMessage);
                 });
             return true;

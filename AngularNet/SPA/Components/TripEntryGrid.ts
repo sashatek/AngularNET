@@ -7,59 +7,64 @@ module Application {
             "$scope"
         ];
 
-        trip: TripWorker = new TripWorker();
+        list: TripModel[];
+        //model : TripModel;
         private ds: Application.Services.DataService;
-        private entityType : EntityType = EntityType.Trip;
+        private entityType: EntityType = EntityType.Trip;
 
         constructor(private $scope) {
-            this.trip = this.ds.trip;
+        }
+        $onInit() {
             this.load();
         }
-
         load() {
             var qry = 0;
-            this.trip.list = [];
-            this.ds.getAllModels(this.entityType, qry, this.onGetAllTrips);
+            this.list = [];
+            this.ds.getAllModels(this.entityType, qry, this.onGetAll);
         }
 
-        onGetAllTrips = (trips: TripModel[]) => {
-            this.newTrip();
+        onGetAll = (data: TripModel[]) => {
+            this.list = data;
+            this.addLine();
         }
 
-        //onGetTrip = (trip: TripModel) => {
+        //onGet = (data: YourModel) => {
         //}
 
-        saveTrip(model: TripModel, form) {
-            this.ds.saveModel(this.entityType, model, this.onAddTrip, this.onSaveTrip);
+        save(model: TripModel, form) {
+            if (model.isNew) {
+                //model.Id = 1;
+            }
+            this.ds.saveModel(this.entityType, model, this.onAdd, this.onSave);
             form.$setPristine();
             if (model.isNew) {
-                this.newTrip();
+                this.addLine();
             }
         }
 
-        onAddTrip = (model: TripModel) => {
+        onAdd = (model: TripModel) => {
             model.isNew = false;
         }
 
-        onSaveTrip = (model: TripModel) => {
+        onSave = (model: TripModel) => {
         }
 
-        deleteTrip(model, form) {
-            if (this.ds.deleteModel(this.entityType, model, this.onDeleteTrip)) {
-                this.trip.list.splice(this.trip.list.indexOf(model), 1);
+        delete(model, form) {
+            if (this.ds.deleteModel(this.entityType, model, this.onDelete)) {
+                this.list.splice(this.list.indexOf(model), 1);
             }
         }
 
 
-        onDeleteTrip = (model) => {
+        onDelete = (model: TripModel) => {
         }
 
 
-        newTrip():void {
+        addLine() {
             var model = new TripModel();
             model.isNew = true;
             TripModel.onGet(model);
-            this.trip.list.push(model);
+            this.list.push(model);
         }
     }
 

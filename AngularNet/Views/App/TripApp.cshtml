@@ -5,7 +5,7 @@
 
 <html>
 <head>
-    <meta name="viewport" content="width=device-width"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
     <script src="~/Scripts/angular.js"></script>
     <script src="~/Scripts/angular-ui/ui-bootstrap-tpls.min.js"></script>
 
@@ -15,13 +15,13 @@
     <title>Angular .NET Reference App</title>
 </head>
 <body>
-<div ng-app="TripAppModule">
+<div ng-app="TripAppModule" class="container">
     <div ng-controller="TripAppController as ac" ng-cloak>
         <div class="navbar navbar-default navbar-fixed-top" role="navigation">
             <div class="container-fluid">
                 <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" ng-init="navCollapsed = true" data-toggle="collapse"
-                            ng-click="navCollapsed = !navCollapsed">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" 
+                            data-target="#bs-example-navbar-collapse-3" ng-click="ac.navCollapsed = !ac.navCollapsed">
                         <span class="sr-only">Toggle navigation</span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
@@ -35,51 +35,33 @@
                         <span style="color:darkblue">Angular.NET</span>
                     </a>
                 </div>
-                <div uib-collapse="navCollapsed" class="collapse navbar-collapse">
+                <div uib-collapse="!ac.navCollapsed" class="collapse navbar-collapse">
                     <ul class="nav navbar-nav">
-                        <li uib-dropdown is-open="isopen">
-                            <a href="#" ng-click="mode = 1" uib-dropdown-toggle>Code</a>
-                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet" target="_blank">Project on Github</a></li>
-                                <li class="divider"></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/TripAppController.ts" target="_blank">App Controller</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/DataServices.ts" target="_blank">Data Service</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/App/TripApp.cshtml" target="_blank">App HTML</a></li>
-                                <li class="divider"></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripEntryGrid.ts" target="_blank">Entry Grid Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripEntryGrid.cshtml" target="_blank">Entry Grid HTML</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripForm.ts" target="_blank">Form Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripForm.cshtml" target="_blank">Form HTML</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripPopupGrid.ts" target="_blank">Popup Form Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripPopupGrid.cshtml" target="_blank">Popup Form HTML</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripNavToForm.ts" target="_blank">Nav To Form Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripNavToForm.cshtml" target="_blank">Nav To Form HTML</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripSideFormGrid.ts" target="_blank">Siade Form Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripSideFormGrid.cshtml" target="_blank">Side Form HTML</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/SPA/Components/TripInlineGrid.ts" target="_blank">Inline Edit Component</a></li>
-                                <li role="menuitem"><a href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/Views/Component/TripInlineGrid.cshtml" target="_blank">Inline edit HTML</a></li>
-
-                              </ul>
-
-                        </li>
-                        <li class="dropdown" uib-dropdown on-toggle="toggled(open)">
+                         <li class="dropdown" uib-dropdown on-toggle="toggled(isOpen)">
                             <a href="#" class="dropdown-toggle" uib-dropdown-toggle>
-                                GRID Edit Mode<span class="caret"></span>
+                                Demo<span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li><a href="#" ng-click="ac.viewMode=1">Always Editable</a></li>
-                                <li><a href="#" ng-click="ac.viewMode=2">Popup Form</a></li>
-                                <li><a href="#" ng-click="ac.viewMode=6">Nav to Form</a></li>
-                                <li><a href="#" ng-click="ac.viewMode=3">Side Form</a></li>
-                                <li><a href="#" ng-click="ac.viewMode=4">Inline</a></li>
-                                @*<li ng-repeat="model in ids.modes">
-                                            <a href="#" ng-click="genCode(model.value)">{{model.text}}</a>
-                                        </li>*@
+                                <li ng-repeat="a in ac.actions" ng-click="ac.navCollapsed = !ac.navCollapsed;">
+                                    <a href="#" ng-click="ac.viewMode=a.action">{{a.text}}</a>
+                                </li>
                             </ul>
                         </li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Flight", "Main", "App")</li>
+                        <li class="dropdown" uib-dropdown>
+                            <a role="button" class="dropdown-toggle" uib-dropdown-toggle>
+                                Code <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu" uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                                <li role="menuitem"ng-repeat="item in ac.code" ng-class="{divider : item.name==='divider'}"
+                                    ng-click="ac.navCollapsed = !ac.navCollapsed;">
+                                    <a ng-if="$index === 0" ng-href="{{item.url}}" target="_blank">{{item.name}}b</a>
+                                    <a ng-if="$index !== 0" ng-href="https://github.com/sashatek/AngularNet/blob/master/AngularNet/{{item.url}}" 
+                                       target="_blank">{{item.name}}b</a>
+                                </li>
+ 
+                            </ul>
+
+                        </li>
                     </ul>
                     <div class="container navbar-form navbar-left">
                         <div class="form-group">
@@ -91,7 +73,7 @@
                 <!--/.navbar-collapse -->
             </div>
         </div>
-        <div class="col-xs-12" style="margin-top: 50px;">
+        <div style="margin-top: 50px;">
             <div ng-if="ac.viewMode==1">
                 <h2>Entry Grid</h2>
                 <trip-entry-grid data-ds="ac.ds" search="ac.searchText"></trip-entry-grid>

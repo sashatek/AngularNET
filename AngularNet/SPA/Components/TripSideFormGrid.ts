@@ -6,75 +6,77 @@ module Application {
     export class TripSideFormGridController {
 
         static $inject = [
-            "DataService",
             "$scope"
         ];
 
-        trip: TripWorker = new TripWorker();
+        list: TripModel[] = null;
+        model: TripModel = null;
+        modelCopy: TripModel = null;
         showForm: boolean = false;
         private ds: Services.DataService;
 
         constructor(private $scope) {
-            this.trip = this.ds.trip;
             $scope.dateToMdy = dateToMdy;
             this.load();
         }
 
         load() {
             var qry = 0;
-            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAllTrips);
+            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
         }
 
-        onGetAllTrips = (trips: TripModel[]) => {
-            this.trip.list = trips;
-            this.newTrip();
+        onGetAll = (data: TripModel[]) => {
+            this.list = data;
+            this.newRow();
         }
 
-        addTrip() {
-            this.trip.model = this.newTrip();
-            this.trip.modelCopy = null;;
+        add(form) {
+            this.model = this.newRow();
+            this.modelCopy = null;;
         }
 
-        editTrip(model, form) {
-            if (this.trip.model && this.trip.model.form && this.trip.model.form.$dirty) {
+        edit(model, form) {
+            if (this.model && this.model.form && this.model.form.$dirty) {
                 return;
             }
-            this.trip.model = model;
-            this.trip.modelCopy = angular.copy(model);
+            this.model = model;
+            this.modelCopy = angular.copy(model);
         }
 
         onFormInit(form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         }
 
-        saveTrip(model,form) {
+        save(model,form) {
             form.$setPristine();
-            this.ds.saveModel(EntityType.Trip, this.trip.model, this.onAddTrip, this.onSaveTrip);
+            this.ds.saveModel(EntityType.Trip, this.model, this.onAdd, this.onSave);
         }
 
-        onAddTrip = (model: TripModel) => {
+        onAdd = (model: TripModel) => {
             model.isNew = false;
-            this.trip.list.unshift(model);
-            this.trip.model = this.trip.modelCopy = null;
+            this.list.unshift(model);
+            this.model = this.modelCopy = null;
         }
 
-        onSaveTrip = (model: TripModel) => {
-            this.trip.model = this.trip.modelCopy = null;
+        onSave = (model: TripModel) => {
+            if (model === this.model) {
+                this.model = this.modelCopy = null;
+            }
         }
 
-  
-        deleteTrip(model) {
-            this.ds.deleteModel(EntityType.Trip, this.trip.model, this.onDeleteTrip);
+
+        delete(model) {
+            this.ds.deleteModel(EntityType.Trip, this.model, this.onDelete);
         }
 
-        onDeleteTrip = (model) => {
-            var index = this.trip.list.indexOf(model);
-            this.trip.list.splice(index, 1);
-            this.trip.model = null;
-            this.trip.modelCopy = null;
+        onDelete = (model) => {
+            var index = this.list.indexOf(model);
+            this.list.splice(index, 1);
+            this.model = null;
+            this.modelCopy = null;
         }
 
-        newTrip() {
+        newRow() {
             var model = new TripModel();
             model.isNew = true;
             TripModel.onGet(model);
@@ -83,15 +85,15 @@ module Application {
 
 
         cancel() {
-            if (this.trip.modelCopy) {
-                angular.copy(this.trip.modelCopy, this.trip.model);
+            if (this.modelCopy) {
+                angular.copy(this.modelCopy, this.model);
             }
-            this.trip.model = null;
-            this.trip.modelCopy = null;
+            this.model = null;
+            this.modelCopy = null;
         }
 
         init(form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         }
     }
 

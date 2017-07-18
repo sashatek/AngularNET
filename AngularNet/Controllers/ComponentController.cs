@@ -22,11 +22,23 @@ namespace AngularNet.Controllers
         {
             return View();
         }
+        public ActionResult TripNavToFormAsTable()
+        {
+            return View();
+        }
         public ActionResult TripPopupGrid()
         {
             return View();
         }
+        public ActionResult TripPopupTable()
+        {
+            return View();
+        }
         public ActionResult TripSideFormGrid()
+        {
+            return View();
+        }
+        public ActionResult TripSideFormTable()
         {
             return View();
         }

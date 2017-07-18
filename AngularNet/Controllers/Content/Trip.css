@@ -76,3 +76,18 @@ input[type=text]::-ms-clear { display: none; }
 .navbar-brand {
     color: darkblue;
 }
+
+.tripList {
+    position: relative;
+    width: 220px;
+    min-height: 220px;
+    display: inline-block;
+    margin: 1em;
+    padding-top: 8px;
+    text-align: center;
+    -moz-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
+    box-shadow: 10px 10px 9px rgba(0, 0, 0, 0.22);
+    background-color: #ffc;
+    vertical-align: top;
+}

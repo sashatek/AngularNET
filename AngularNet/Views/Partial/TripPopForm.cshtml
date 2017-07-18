@@ -35,7 +35,7 @@
         <div class="form-group">
             <label for="airportId" class="control-label">Airport IATA</label>
             <input type="text" class="form-control" ng-model="fc.model.airportId_" id="airportId" required
-                   uib-typeahead="o as o.text for o in fc.ds.lookArpt($viewValue)" typeahead-on-select="fc.model.airportId = $item.value"
+                   uib-typeahead="o as o.text for o in fc.ds.lookupArpt($viewValue)" typeahead-on-select="fc.model.airportId = $item.value"
                    typeahead-editable="false"/>
         </div>
         <div class="form-group">

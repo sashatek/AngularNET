@@ -1,5 +1,28 @@
 ﻿module Application {
 
+    var code = [
+        { url: "https://github.com/sashatek/AngularNet", name: "Project on Github" },
+        { url: "", name: "divider" },
+        { url: "SPA/TripAppController.ts", name: "App Controller"},
+        { url: "SPA/DataServices.ts", name: "Data Service"},
+        { url: "Views/App/TripApp.cshtml", name: "App HTML"},
+        { url: "", name: "divider" },
+        { url: "SPA/Components/TripEntryGrid.ts", name: "Entry Grid Component"},
+        { url: "Views/Component/TripEntryGrid.cshtml", name: "Entry Grid HTML"},
+        { url: "SPA/Components/TripForm.ts", name: "Form Component"},
+        { url: "Views/Component/TripForm.cshtml", name: "Form HTML"},
+        { url: "SPA/Components/TripPopupGrid.ts", name: "Popup Form Component"},
+        { url: "Views/Component/TripPopupGrid.cshtml" , name: " Form HTML"},
+        { url: "SPA/Components/TripNavToForm.ts", name: "Nav To Form Component"},
+        { url: "Views/Component/TripNavToForm.cshtml", name: "To Form HTML"},
+        { url: "SPA/Components/TripSideFormGrid.ts", name: "Siade Form Component"},
+        { url: "Views/Component/TripSideFormGrid.cshtml", name: "Side Form HTML"},
+        { url: "SPA/Components/TripInlineGrid.ts", name: "Inline Edit Component"},
+        { url: "Views/Component/TripInlineGrid.cshtml", name: "Inline edit HTML"}
+
+    ];
+
+ 
     export class TheAppController {
 
         static $inject = [
@@ -13,6 +36,9 @@
         viewMode: number = -1;
         that: any;
         searchText : string = "";
+        code = code;
+        navCollapsed :boolean;
+        actions;
 
         constructor(private ds: Services.DataService, private $scope, private $timeout) {
             this.errorMessage = null;
@@ -20,11 +46,22 @@
             this.ds.getRefs(this.onGetRefs);
             $scope.urlApp = urlApp;
             //this.load();
+            this.actions = [
+                { action: 1, text: "EntryGrid" },
+                { action: 2, text: "Popup Form" },
+                { action: 6, text: "Nav to Form" },
+                { action: 3, text: "Side Form" },
+                { action: 4, text: "Inline" }
+            ];
         }
 
         onGetRefs = (data)=> {
             CrudUtils.ref = this.ds.ref;
             this.viewMode =1;
+        }
+
+        test() {
+            this.navCollapsed = !this.navCollapsed;
         }
 
     }

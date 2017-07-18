@@ -4,45 +4,48 @@ var Application;
         function TripGridController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.trip = new TripWorker();
             this.entityType = EntityType.Trip;
-            this.onGetAllTrips = function (trips) {
-                _this.newTrip();
+            this.onGetAll = function (data) {
+                _this.list = data;
+                _this.addLine();
             };
-            this.onAddTrip = function (model) {
+            this.onAdd = function (model) {
                 model.isNew = false;
             };
-            this.onSaveTrip = function (model) {
+            this.onSave = function (model) {
             };
-            this.onDeleteTrip = function (model) {
+            this.onDelete = function (model) {
             };
-            this.trip = this.ds.trip;
-            this.load();
         }
+        TripGridController.prototype.$onInit = function () {
+            this.load();
+        };
         TripGridController.prototype.load = function () {
             var qry = 0;
-            this.trip.list = [];
-            this.ds.getAllModels(this.entityType, qry, this.onGetAllTrips);
+            this.list = [];
+            this.ds.getAllModels(this.entityType, qry, this.onGetAll);
         };
-        //onGetTrip = (trip: TripModel) => {
+        //onGet = (data: YourModel) => {
         //}
-        TripGridController.prototype.saveTrip = function (model, form) {
-            this.ds.saveModel(this.entityType, model, this.onAddTrip, this.onSaveTrip);
+        TripGridController.prototype.save = function (model, form) {
+            if (model.isNew) {
+            }
+            this.ds.saveModel(this.entityType, model, this.onAdd, this.onSave);
             form.$setPristine();
             if (model.isNew) {
-                this.newTrip();
+                this.addLine();
             }
         };
-        TripGridController.prototype.deleteTrip = function (model, form) {
-            if (this.ds.deleteModel(this.entityType, model, this.onDeleteTrip)) {
-                this.trip.list.splice(this.trip.list.indexOf(model), 1);
+        TripGridController.prototype.delete = function (model, form) {
+            if (this.ds.deleteModel(this.entityType, model, this.onDelete)) {
+                this.list.splice(this.list.indexOf(model), 1);
             }
         };
-        TripGridController.prototype.newTrip = function () {
+        TripGridController.prototype.addLine = function () {
             var model = new TripModel();
             model.isNew = true;
             TripModel.onGet(model);
-            this.trip.list.push(model);
+            this.list.push(model);
         };
         TripGridController.$inject = [
             "$scope"

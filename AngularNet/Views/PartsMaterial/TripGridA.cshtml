@@ -36,7 +36,7 @@
                     </td>
                     <td>
                         @*<input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
-                               typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                               typeahead="o as o.text for o in gc.ds.lookupArpt($viewValue)" typeahead-editable="false"
                                typeahead-on-select="model.airportId = $item.value"/>*@
                             <md-autocomplete ng-disabled="false" md-menu-class="ttt"
                                              md-no-cache="true" md-select-on-match="true"
@@ -44,7 +44,7 @@
                                              md-search-text-change="gc.searchTextChange(gc.searchText)"
                                              md-search-text="model.searchText"
                                              md-selected-item-change="model.airportId = item.value"
-                                             md-items="item in gc.ds.lookArpt(model.searchText)"
+                                             md-items="item in gc.ds.lookupArpt(model.searchText)"
                                              md-item-text="item.text"
                                              md-min-length="1"
                                              placeholder="Pick an Airport">

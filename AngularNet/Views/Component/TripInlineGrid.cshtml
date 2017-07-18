@@ -38,7 +38,7 @@
             <td ng-if="gc.model !== model">{{model.airportId_.text}}</td>
             <td ng-if="gc.model === model">
                 <input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
-                       uib-typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                       uib-typeahead="o as o.text for o in gc.ds.lookupArpt($viewValue)" typeahead-editable="false"
                        typeahead-on-select="model.airportId = $item.value" />
             </td>
             <td>{{model.airportId_.text2}}</td>

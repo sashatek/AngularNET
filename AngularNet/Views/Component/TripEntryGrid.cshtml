@@ -12,7 +12,8 @@
         <th></th>
         <th></th>
     </tr>
-    <tr ng-repeat="model in gc.trip.list  | filter:gc.search | orderBy : gc.tripSort:gc.tripRev" ng-form="tripForm">
+    <tr ng-repeat="model in gc.list  | filter:gc.search | orderBy : gc.tripSort:gc.tripRev" 
+        ng-form="gridForm">
         <td>
             <div class="input-group">
                 <input type="text" ng-model="model.tripDate_" uib-datepicker-popup="MM/dd/yyyy" class="form-control dateBox"
@@ -28,7 +29,7 @@
         </td>
         <td>
             <input type="text" class="form-control iataBox" ng-model="model.airportId_" id="airportId" required
-                   uib-typeahead="o as o.text for o in gc.ds.lookArpt($viewValue)" typeahead-editable="false"
+                   uib-typeahead="o as o.text for o in gc.ds.lookupArpt($viewValue)" typeahead-editable="false"
                    typeahead-on-select="model.airportId = $item.value"/>
         </td>
         <td>{{model.airportId_.text2}}</td>
@@ -43,13 +44,13 @@
             <input type="number" ng-model="model.groupSize" class="form-control groupSize" id="groupSize">
         </td>
         <td>
-            <button type="button" class="btn btn-primary btn-xs" ng-click="gc.saveTrip(model, tripForm)"
-                    ng-disabled="!(tripForm.$dirty && tripForm.$valid)">
+            <button type="button" class="btn btn-primary btn-xs" ng-click="gc.save(model, gridForm)"
+                    ng-disabled="!(gridForm.$dirty && gridForm.$valid)">
                 <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
             </button>
         </td>
         <td>
-            <button type="button" class="btn btn-warning  btn-xs" ng-click="gc.deleteTrip(model, tripForm)"
+            <button type="button" class="btn btn-warning  btn-xs" ng-click="gc.delete(model, gridForm)"
                     ng-show="!model.isNew">
                 <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
             </button>

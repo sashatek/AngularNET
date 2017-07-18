@@ -39,7 +39,7 @@
                                      md-search-text-change="fc.searchTextChange(gc.searchText)"
                                      md-search-text="model.searchText"
                                      md-selected-item-change="model.airportId = item.value"
-                                     md-items="item in fc.ds.lookArpt(model.searchText)"
+                                     md-items="item in fc.ds.lookupArpt(model.searchText)"
                                      md-item-text="item.text"
                                      md-min-length="1"
                                      placeholder="Pick an Airport">
@@ -61,7 +61,7 @@
                 @*<div class="form-group">
                     <label for="airportId" class="control-label">Airport IATA</label>
                     <input type="text" class="form-control" ng-model="fc.model.airportId_" id="airportId" required
-                           typeahead="o as o.text for o in fc.ds.lookArpt($viewValue)" typeahead-on-select="fc.model.airportId = $item.value"
+                           typeahead="o as o.text for o in fc.ds.lookupArpt($viewValue)" typeahead-on-select="fc.model.airportId = $item.value"
                            typeahead-editable="false" />
                 </div>
                 <div class="form-group">
