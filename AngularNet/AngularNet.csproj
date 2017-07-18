@@ -229,16 +229,16 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Controllers\Content\bootstrap-theme.css" />
-    <Content Include="Controllers\Content\bootstrap-theme.min.css" />
-    <Content Include="Controllers\Content\bootstrap.css" />
-    <Content Include="Controllers\Content\bootstrap.min.css" />
-    <Content Include="Controllers\Content\Trip.css" />
-    <Content Include="Controllers\Content\ui-bootstrap-csp.css" />
+    <Content Include="Content\bootstrap-theme.css" />
+    <Content Include="Content\bootstrap-theme.min.css" />
+    <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\Trip.css" />
+    <Content Include="Content\ui-bootstrap-csp.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Controllers\Content\Site.css" />
+    <Content Include="Content\Site.css" />
     <Content Include="img\icons\ic_android_24px.svg" />
     <Content Include="img\icons\ic_cake_24px.svg" />
     <Content Include="img\icons\ic_check_circle_24px.svg" />
@@ -251,10 +251,10 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
-    <Content Include="Controllers\Content\bootstrap.min.css.map" />
-    <Content Include="Controllers\Content\bootstrap.css.map" />
-    <Content Include="Controllers\Content\bootstrap-theme.min.css.map" />
-    <Content Include="Controllers\Content\bootstrap-theme.css.map" />
+    <Content Include="Content\bootstrap.min.css.map" />
+    <Content Include="Content\bootstrap.css.map" />
+    <Content Include="Content\bootstrap-theme.min.css.map" />
+    <Content Include="Content\bootstrap-theme.css.map" />
     <None Include="Properties\PublishProfiles\Trip File.pubxml" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.js" />
     <Content Include="Scripts\angular-ui\ui-bootstrap-tpls.min.js" />
