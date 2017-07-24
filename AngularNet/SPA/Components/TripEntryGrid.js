@@ -18,6 +18,7 @@ var Application;
             };
         }
         TripGridController.prototype.$onInit = function () {
+            //this.list = this.ds.trip.list;
             this.load();
         };
         TripGridController.prototype.load = function () {
@@ -43,7 +44,6 @@ var Application;
         };
         TripGridController.prototype.addLine = function () {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             this.list.push(model);
         };

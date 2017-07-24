@@ -136,7 +136,6 @@ module Application {
 
          newTrip() {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         }

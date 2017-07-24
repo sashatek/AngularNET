@@ -105,7 +105,6 @@ var Application;
         };
         TripPopupGridController.prototype.newTrip = function () {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         };

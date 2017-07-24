@@ -29,8 +29,11 @@ var Application;
                 _this.modelCopy = null;
             };
             $scope.dateToMdy = dateToMdy;
-            this.load();
         }
+        TripSideFormGridController.prototype.$onInit = function () {
+            //this.list = this.ds.trip.list;
+            this.load();
+        };
         TripSideFormGridController.prototype.load = function () {
             var qry = 0;
             this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
@@ -59,7 +62,6 @@ var Application;
         };
         TripSideFormGridController.prototype.newRow = function () {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         };

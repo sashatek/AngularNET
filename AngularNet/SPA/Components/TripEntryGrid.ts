@@ -14,9 +14,12 @@ module Application {
 
         constructor(private $scope) {
         }
+
         $onInit() {
+            //this.list = this.ds.trip.list;
             this.load();
         }
+
         load() {
             var qry = 0;
             this.list = [];
@@ -62,7 +65,6 @@ module Application {
 
         addLine() {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             this.list.push(model);
         }

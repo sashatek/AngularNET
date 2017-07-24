@@ -17,9 +17,14 @@ module Application {
 
         constructor(private $scope) {
             $scope.dateToMdy = dateToMdy;
+        }
+
+        $onInit() {
+            //this.list = this.ds.trip.list;
             this.load();
         }
 
+        
         load() {
             var qry = 0;
             this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
@@ -78,7 +83,6 @@ module Application {
 
         newRow() {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         }

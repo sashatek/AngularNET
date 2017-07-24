@@ -11,14 +11,14 @@
             <th>Group Name</th>
             <th>Group Size</th>
             <th>
-                @*<button type="button" class="btn btn-primary btn-xs" ng-click="gc.addTrip(tripForm)">
+                @*<button type="button" class="btn btn-primary btn-xs" ng-click="gc.addTrip(gridForm)">
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                     </button>*@
             </th>
             <th></th>
             <th></th>
         </tr>
-        <tr ng-repeat="model in gc.trip.list  | filter:ac.searchText" ng-form="tripForm" ng-click="gc.editTrip(model, tripForm)">
+        <tr ng-repeat="model in gc.list  | filter:ac.searchText" ng-form="gridForm" ng-click="gc.edit(model, gridForm)">
             <td ng-if="gc.model !== model">
                 {{model.tripDate_ | date : "MM/dd/yyyy"}}
             </td>
@@ -62,19 +62,19 @@
                 <input type="number" ng-model="model.groupSize" class="form-control groupSize" id="groupSize">
             </td>
             <td>
-                <button type="button" class="btn btn-primary btn-xs" ng-click="gc.saveTrip(gc.model,tripForm); $event.stopPropagation();"
-                        ng-disabled="!(tripForm.$dirty && tripForm.$valid)" ng-if="gc.model === model">
+                <button type="button" class="btn btn-primary btn-xs" ng-click="gc.save(gc.model,gridForm); $event.stopPropagation();"
+                        ng-disabled="!(gridForm.$dirty && gridForm.$valid)" ng-if="gc.model === model">
                     Save
                 </button>
             </td>
             <td>
                 <button type="button" class="btn btn-primary btn-xs"
-                        ng-click="gc.cancel(gc.model,tripForm); $event.stopPropagation();" ng-if="gc.model === model">
+                        ng-click="gc.cancel(gc.model,gridForm); $event.stopPropagation();" ng-if="gc.model === model">
                     Cancel
                 </button>
             </td>
             <td>
-                <button type="button" class="btn btn-warning btn-xs" ng-click="gc.deleteTrip(gc.model,tripForm); $event.stopPropagation();"
+                <button type="button" class="btn btn-warning btn-xs" ng-click="gc.delete(gc.model,gridForm); $event.stopPropagation();"
                         ng-show="!model.isNew" ng-if="gc.model === model">
                     Delete
                 </button>

@@ -127,6 +127,7 @@ var TripModel = (function () {
         this.tripDate = new Date();
         this.tripDate.setHours(0, 0, 0, 0);
         this.groupSize = 0;
+        this.isNew = true;
     }
     TripModel.onGetAll = function (models) {
         for (var _i = 0, models_1 = models; _i < models_1.length; _i++) {

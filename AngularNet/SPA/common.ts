@@ -201,6 +201,8 @@ class TripModel {
         this.tripDate = new Date();
         this.tripDate.setHours(0, 0, 0, 0);
         this.groupSize = 0;
+
+        this.isNew = true;
     }
 
     static onGetAll(models: TripModel[]) {

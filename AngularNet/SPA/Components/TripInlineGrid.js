@@ -4,35 +4,38 @@ var Application;
         function TripInlineInlineController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.trip = new TripWorker();
+            this.list = null;
             this.model = null;
             this.modelCopy = null;
             this.form = null;
-            this.onGetAllTrips = function (trips) {
-                _this.newTrip();
+            this.onGetAll = function (data) {
+                _this.list = data;
+                _this.newRow();
             };
-            this.onAddTrip = function (model) {
+            this.onAdd = function (model) {
                 model.isNew = false;
             };
-            this.onSaveTrip = function (model) {
+            this.onSave = function (model) {
             };
-            this.onDeleteTrip = function (model) {
+            this.onDelete = function (model) {
             };
-            this.trip = this.ds.trip;
             $scope.dateToMdy = dateToMdy;
-            this.load();
         }
+        TripInlineInlineController.prototype.$onInit = function () {
+            //this.list = this.ds.list;
+            this.load();
+        };
         TripInlineInlineController.prototype.load = function () {
             var qry = 0;
-            this.trip.list = [];
-            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAllTrips);
+            this.list = [];
+            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
         };
-        TripInlineInlineController.prototype.addTrip = function () {
-            this.model = this.newTrip();
+        TripInlineInlineController.prototype.add = function () {
+            this.model = this.newRow();
             this.modelCopy = null;
             ;
         };
-        TripInlineInlineController.prototype.editTrip = function (model, form) {
+        TripInlineInlineController.prototype.edit = function (model, form) {
             if (this.model && this.form.$dirty) {
                 return;
             }
@@ -40,27 +43,26 @@ var Application;
             this.modelCopy = angular.copy(model);
             this.form = form;
         };
-        TripInlineInlineController.prototype.saveTrip = function (model, form) {
+        TripInlineInlineController.prototype.save = function (model, form) {
             if (model.isNew) {
-                this.newTrip();
+                this.newRow();
             }
             model.form = form;
-            this.trip.model = model;
-            this.ds.saveModel(EntityType.Trip, model, this.onAddTrip, this.onSaveTrip);
+            this.model = model;
+            this.ds.saveModel(EntityType.Trip, model, this.onAdd, this.onSave);
             model.form.$setPristine();
             this.model = this.modelCopy = null;
         };
-        TripInlineInlineController.prototype.deleteTrip = function (model, form) {
-            if (this.ds.deleteModel(EntityType.Trip, model, this.onDeleteTrip)) {
-                this.trip.list.splice(this.trip.list.indexOf(model), 1);
+        TripInlineInlineController.prototype.delete = function (model, form) {
+            if (this.ds.deleteModel(EntityType.Trip, model, this.onDelete)) {
+                this.list.splice(this.list.indexOf(model), 1);
                 this.model = this.modelCopy = null;
             }
         };
-        TripInlineInlineController.prototype.newTrip = function () {
+        TripInlineInlineController.prototype.newRow = function () {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
-            this.trip.list.push(model);
+            this.list.push(model);
             return model;
         };
         TripInlineInlineController.prototype.cancel = function (model, form) {

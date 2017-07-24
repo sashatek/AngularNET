@@ -8,85 +8,89 @@
             "$scope"
         ];
 
-        trip: TripWorker = new TripWorker();
+        list: TripModel[] = null;
+        model: TripModel = null;
+        modelCopy: TripModel = null;
         showForm: boolean = false;
         editMode: number = 0;
         private ds: Services.DataService;
 
         constructor(private $scope) {
-            this.trip = this.ds.trip;
             $scope.dateToMdy = dateToMdy;
+        }
+
+        $onInit() {
+            //this.list = this.ds.list;
             this.load();
         }
 
         load() {
             var qry = 0;
-            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAllTrips);
+            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
         }
 
         formInit(form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         }
 
-        onGetAllTrips = (trips: TripModel[]) => {
-            this.trip.list = trips;
+        onGetAll = (trips: TripModel[]) => {
+            this.list = trips;
         }
 
-        addTrip() {
-            this.trip.model = this.newTrip();
-            this.trip.modelCopy = null;;
+        add() {
+            this.model = this.newRow();
+            this.modelCopy = null;;
             this.editMode = 1;
         }
 
-        editTrip(model, form) {
-            this.trip.model = model;
-            this.trip.modelCopy = angular.copy(model);
+        edit(model) {
+            this.model = model;
+            this.modelCopy = angular.copy(model);
             this.editMode = 1;
         }
 
 
-        saveTrip(model) {
-            this.ds.saveModel(EntityType.Trip, this.trip.model, this.onAddTrip, this.onSaveTrip);
-            this.trip.model = this.trip.modelCopy = null;
+        save(model) {
+            this.ds.saveModel(EntityType.Trip, this.model, this.onAdd, this.onSave);
+            this.model = this.modelCopy = null;
             this.editMode = 0;
         }
 
-        onAddTrip = (model: TripModel) => {
+        onAdd = (model: TripModel) => {
             model.isNew = false;
-            this.trip.list.unshift(model);
+            this.list.unshift(model);
         }
 
-        onSaveTrip = (model: TripModel) => {
+        onSave = (model: TripModel) => {
 
         }
 
-        deleteTrip(model) {
-            if (this.ds.deleteModel(EntityType.Trip, model, this.onDeleteTrip)) {
+        delete(model) {
+            if (this.ds.deleteModel(EntityType.Trip, model, this.onDelete)) {
                 // If Sync move the below to onDeleteTrip
                 //
-                this.trip.list.splice(this.trip.list.indexOf(model), 1);
-                this.trip.model = this.trip.modelCopy = null;
+                this.list.splice(this.list.indexOf(model), 1);
+                this.model = this.modelCopy = null;
                 this.editMode = 0;
             }
         }
 
-        onDeleteTrip = (model) => {
+        onDelete = (model) => {
         }
 
-        newTrip() {
+        newRow() {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         }
 
 
-        cancelTrip() {
-            if (this.trip.modelCopy) {
-                angular.copy(this.trip.modelCopy, this.trip.model);
+        cancel() {
+            if (this.modelCopy) {
+                angular.copy(this.modelCopy, this.model);
             }
-            this.trip.model = null;
-            this.trip.modelCopy = null;
+            this.model = null;
+            this.modelCopy = null;
             this.editMode = 0;
         }
     }

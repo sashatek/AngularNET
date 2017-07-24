@@ -5,68 +5,71 @@ var Application;
         function TripNavToFormController($scope) {
             var _this = this;
             this.$scope = $scope;
-            this.trip = new TripWorker();
+            this.list = null;
+            this.model = null;
+            this.modelCopy = null;
             this.showForm = false;
             this.editMode = 0;
-            this.onGetAllTrips = function (trips) {
-                _this.trip.list = trips;
+            this.onGetAll = function (trips) {
+                _this.list = trips;
             };
-            this.onAddTrip = function (model) {
+            this.onAdd = function (model) {
                 model.isNew = false;
-                _this.trip.list.unshift(model);
+                _this.list.unshift(model);
             };
-            this.onSaveTrip = function (model) {
+            this.onSave = function (model) {
             };
-            this.onDeleteTrip = function (model) {
+            this.onDelete = function (model) {
             };
-            this.trip = this.ds.trip;
             $scope.dateToMdy = dateToMdy;
-            this.load();
         }
+        TripNavToFormController.prototype.$onInit = function () {
+            //this.list = this.ds.list;
+            this.load();
+        };
         TripNavToFormController.prototype.load = function () {
             var qry = 0;
-            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAllTrips);
+            this.ds.getAllModels(EntityType.Trip, qry, this.onGetAll);
         };
         TripNavToFormController.prototype.formInit = function (form) {
-            this.trip.model.form = form;
+            this.model.form = form;
         };
-        TripNavToFormController.prototype.addTrip = function () {
-            this.trip.model = this.newTrip();
-            this.trip.modelCopy = null;
+        TripNavToFormController.prototype.add = function () {
+            this.model = this.newRow();
+            this.modelCopy = null;
             ;
             this.editMode = 1;
         };
-        TripNavToFormController.prototype.editTrip = function (model, form) {
-            this.trip.model = model;
-            this.trip.modelCopy = angular.copy(model);
+        TripNavToFormController.prototype.edit = function (model) {
+            this.model = model;
+            this.modelCopy = angular.copy(model);
             this.editMode = 1;
         };
-        TripNavToFormController.prototype.saveTrip = function (model) {
-            this.ds.saveModel(EntityType.Trip, this.trip.model, this.onAddTrip, this.onSaveTrip);
-            this.trip.model = this.trip.modelCopy = null;
+        TripNavToFormController.prototype.save = function (model) {
+            this.ds.saveModel(EntityType.Trip, this.model, this.onAdd, this.onSave);
+            this.model = this.modelCopy = null;
             this.editMode = 0;
         };
-        TripNavToFormController.prototype.deleteTrip = function (model) {
-            if (this.ds.deleteModel(EntityType.Trip, model, this.onDeleteTrip)) {
+        TripNavToFormController.prototype.delete = function (model) {
+            if (this.ds.deleteModel(EntityType.Trip, model, this.onDelete)) {
                 // If Sync move the below to onDeleteTrip
                 //
-                this.trip.list.splice(this.trip.list.indexOf(model), 1);
-                this.trip.model = this.trip.modelCopy = null;
+                this.list.splice(this.list.indexOf(model), 1);
+                this.model = this.modelCopy = null;
                 this.editMode = 0;
             }
         };
-        TripNavToFormController.prototype.newTrip = function () {
+        TripNavToFormController.prototype.newRow = function () {
             var model = new TripModel();
-            model.isNew = true;
             TripModel.onGet(model);
             return model;
         };
-        TripNavToFormController.prototype.cancelTrip = function () {
-            if (this.trip.modelCopy) {
-                angular.copy(this.trip.modelCopy, this.trip.model);
+        TripNavToFormController.prototype.cancel = function () {
+            if (this.modelCopy) {
+                angular.copy(this.modelCopy, this.model);
             }
-            this.trip.model = null;
-            this.trip.modelCopy = null;
+            this.model = null;
+            this.modelCopy = null;
             this.editMode = 0;
         };
         TripNavToFormController.$inject = [
